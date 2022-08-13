@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+        }
+        .red{
+            border: 1px solid red;
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drugs</h1>
+    <form action="{% url 'drug-list' %}" method="get">
+        {% csrf_token %}
+        <input type="hidden" name="filter_type" value="search">
+        <input type="text" name="filter_value" placeholder="Axtar">
+        <input type="submit">
+    </form>
+    <table>
+        <thead>
+            <th>Dərman adı</th>
+            <th>Şirkət adı</th>
+            <th>Qiymət</th>
+            <th>Bitiş Tarixi</th>
+            <th>Resept Vacibiyyəti</th>
+        </thead>
+        <tbody>
+            {% for drug in drugs %}
+                
+                    <tr class="{% if drug.recipe_needed %}red{% endif %}"> 
+                        <td>{{drug.title}}</td>
+                        <td>{{drug.factory.title}}</td>
+                        <td>{{drug.price}} AZN</td>
+                        <td>{{drug.expire}}</td>
+                        <td>
+                            {% if drug.recipe_needed %}Lazımdır{% else %}Lazım deyl{% endif %}
+                        </td>
+                    </tr>
+                
+                
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
